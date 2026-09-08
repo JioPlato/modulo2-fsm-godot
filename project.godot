@@ -1,0 +1,27 @@
+; Módulo II — Laboratório de máquinas de estados
+; Engine: Godot 4.2 ou superior
+
+config_version=5
+
+[application]
+
+config/name="Modulo II - Laboratorio de FSM"
+config/description="Laboratório de máquinas de estados finitas — ICAJD I"
+run/main_scene="res://scenes/lab_a_naive.tscn"
+config/features=PackedStringArray("4.2", "GL Compatibility")
+
+[display]
+
+window/size/viewport_width=1152
+window/size/viewport_height=648
+window/stretch/mode="canvas_items"
+
+[physics]
+
+common/physics_ticks_per_second=60
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.96, 0.96, 0.96, 1)
