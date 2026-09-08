@@ -1,0 +1,51 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/actors/guard.gd" id="1_guard"]
+[ext_resource type="Script" path="res://src/perception/vision_sensor.gd" id="2_sensor"]
+[ext_resource type="Script" path="res://src/fsm/state_machine.gd" id="3_machine"]
+[ext_resource type="Script" path="res://src/fsm/states/patrol_state.gd" id="4_patrol"]
+[ext_resource type="Script" path="res://src/fsm/states/chase_state.gd" id="5_chase"]
+[ext_resource type="Script" path="res://src/fsm/states/attack_state.gd" id="6_attack"]
+[ext_resource type="Script" path="res://src/fsm/states/search_state.gd" id="7_search"]
+[ext_resource type="Script" path="res://src/debug/state_label.gd" id="8_label"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_guard"]
+radius = 15.0
+
+[node name="Guard" type="CharacterBody2D"]
+motion_mode = 1
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_guard")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_guard")
+
+[node name="VisionSensor" type="Node2D" parent="."]
+script = ExtResource("2_sensor")
+
+[node name="StateLabel" type="Label" parent="."]
+offset_left = -46.0
+offset_top = -48.0
+offset_right = 46.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Patrol"
+horizontal_alignment = 1
+script = ExtResource("8_label")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("3_machine")
+
+[node name="Patrol" type="Node" parent="StateMachine"]
+script = ExtResource("4_patrol")
+
+[node name="Chase" type="Node" parent="StateMachine"]
+script = ExtResource("5_chase")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("6_attack")
+
+[node name="Search" type="Node" parent="StateMachine"]
+script = ExtResource("7_search")
