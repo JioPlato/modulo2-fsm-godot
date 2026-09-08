@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/world/walls.gd" id="1_walls"]
+[ext_resource type="Script" path="res://src/world/patrol_route.gd" id="route"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://src/naive/guard_naive.gd" id="3_guard"]
+[ext_resource type="Script" path="res://src/perception/vision_sensor.gd" id="4_sensor"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_guard"]
+radius = 15.0
+
+[node name="LabA" type="Node2D"]
+
+[node name="Walls" type="Node2D" parent="." groups=["walls"]]
+script = ExtResource("1_walls")
+
+[node name="PatrolPoints" type="Node2D" parent="."]
+script = ExtResource("route")
+
+[node name="P0" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(160, 140)
+
+[node name="P1" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(980, 140)
+
+[node name="P2" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(980, 520)
+
+[node name="P3" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(160, 520)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(480, 330)
+
+[node name="Guard" type="CharacterBody2D" parent="."]
+position = Vector2(160, 140)
+motion_mode = 1
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("3_guard")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Guard"]
+shape = SubResource("CircleShape2D_guard")
+
+[node name="VisionSensor" type="Node2D" parent="Guard"]
+script = ExtResource("4_sensor")
+
+[node name="StateLabel" type="Label" parent="Guard"]
+offset_left = -40.0
+offset_top = -46.0
+offset_right = 40.0
+offset_bottom = -26.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+text = "PATRULHAR"
+horizontal_alignment = 1
