@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://src/actors/guard.gd" id="1_guard"]
 [ext_resource type="Script" path="res://src/perception/vision_sensor.gd" id="2_sensor"]
@@ -8,6 +8,9 @@
 [ext_resource type="Script" path="res://src/fsm/states/attack_state.gd" id="6_attack"]
 [ext_resource type="Script" path="res://src/fsm/states/search_state.gd" id="7_search"]
 [ext_resource type="Script" path="res://src/debug/state_label.gd" id="8_label"]
+[ext_resource type="Script" path="res://src/fsm/states/combat_state.gd" id="9_combat"]
+[ext_resource type="Script" path="res://src/fsm/states/flee_state.gd" id="10_flee"]
+[ext_resource type="Script" path="res://src/fsm/states/global_state.gd" id="11_global"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_guard"]
 radius = 15.0
@@ -41,11 +44,20 @@ script = ExtResource("3_machine")
 [node name="Patrol" type="Node" parent="StateMachine"]
 script = ExtResource("4_patrol")
 
-[node name="Chase" type="Node" parent="StateMachine"]
+[node name="Combat" type="Node" parent="StateMachine"]
+script = ExtResource("9_combat")
+
+[node name="Chase" type="Node" parent="StateMachine/Combat"]
 script = ExtResource("5_chase")
 
-[node name="Attack" type="Node" parent="StateMachine"]
+[node name="Attack" type="Node" parent="StateMachine/Combat"]
 script = ExtResource("6_attack")
 
 [node name="Search" type="Node" parent="StateMachine"]
 script = ExtResource("7_search")
+
+[node name="Flee" type="Node" parent="StateMachine"]
+script = ExtResource("10_flee")
+
+[node name="Global" type="Node" parent="StateMachine"]
+script = ExtResource("11_global")

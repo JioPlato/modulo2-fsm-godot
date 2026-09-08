@@ -1,21 +1,17 @@
-## Perseguir: vai em linha reta até a última posição conhecida do alvo.
+## Perseguir — agora um SUB-ESTADO de Combat.
 ##
-## Em linha reta — e por isso ele trava em quinas. Isso não é um defeito do
-## laboratório: é exatamente a lacuna que o Módulo III preenche, com
-## *steering behaviours* e busca de caminho.
+## Compare com a versão da etapa B: o teste de desistência por tempo sumiu
+## daqui. Ele subiu para `combat_state.gd`, escrito uma única vez, e vale
+## para este estado e para Attack.
+##
+## O arquivo ficou com uma responsabilidade só: ir na direção do alvo e
+## avisar quando estiver perto o bastante para golpear.
 extends State
 
 func enter() -> void:
 	agent.set_body_color(LabPalette.PERSEGUIR)
 
 func execute(_delta: float) -> void:
-	# >>> DESISTÊNCIA POR TEMPO — cópia nº 1 <<<
-	# A mesma regra está escrita, palavra por palavra, em attack_state.gd.
-	# Guarde este incômodo: a etapa C existe para eliminá-lo.
-	if agent.sensor.time_since_seen() > agent.give_up_time:
-		go(&"search")
-		return
-
 	if agent.sensor.distance() <= agent.attack_radius:
 		go(&"attack")
 		return

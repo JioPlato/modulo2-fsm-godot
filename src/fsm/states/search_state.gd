@@ -4,6 +4,10 @@
 ## não sabe onde o jogador estava — ele só sabe o que percebe agora, e agora
 ## não percebe nada. "Ir ao último lugar visto" é o exemplo mais econômico do
 ## que o estado interno compra em termos de comportamento crível.
+##
+## A `patience` não é enfeite: sem ela, uma última posição vista atrás de uma
+## parede prenderia o guarda para sempre. Todo estado que persegue um ponto
+## do mundo precisa de uma saída que não dependa de chegar lá.
 extends State
 
 @export var patience: float = 4.0
@@ -18,7 +22,7 @@ func enter() -> void:
 
 func execute(delta: float) -> void:
 	if agent.sensor.can_see():
-		go(&"chase")            # na etapa C este destino vira &"combat"
+		go(&"combat")        # etapa C: o destino agora é o SUPER-ESTADO
 		return
 
 	_elapsed += delta

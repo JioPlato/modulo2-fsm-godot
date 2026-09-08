@@ -12,7 +12,7 @@ func enter() -> void:
 
 func execute(_delta: float) -> void:
 	if agent.sensor.can_see():
-		go(&"chase")            # na etapa C este destino vira &"combat"
+		go(&"combat")        # etapa C: o destino agora é o SUPER-ESTADO
 		return
 
 	if agent.patrol_points.is_empty():

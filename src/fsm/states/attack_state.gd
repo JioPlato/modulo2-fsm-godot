@@ -1,8 +1,11 @@
-## Atacar: para e golpeia em intervalos regulares.
+## Atacar — agora um SUB-ESTADO de Combat.
+##
+## Como em Chase, o teste de desistência por tempo saiu deste arquivo. O que
+## sobrou é o comportamento próprio do estado, e nada mais.
 ##
 ## Observe o uso de `enter()`: o som e a mudança de cor acontecem UMA vez, no
 ## instante da troca. Se estivessem em `execute()`, tocariam sessenta vezes
-## por segundo. É a diferença entre a saída "à Mealy" e a "à Moore" da teoria.
+## por segundo. É a diferença entre a saída "à Mealy" e a "à Moore".
 extends State
 
 @export var damage: int = 8
@@ -17,14 +20,6 @@ func enter() -> void:
 
 func execute(delta: float) -> void:
 	agent.stop()
-
-	# >>> DESISTÊNCIA POR TEMPO — cópia nº 2 <<<
-	# Idêntica à de chase_state.gd. Mude uma e esqueça a outra, e o guarda
-	# passa a se comportar de forma diferente conforme o sub-estado em que
-	# estava — o defeito mais difícil de reproduzir que existe.
-	if agent.sensor.time_since_seen() > agent.give_up_time:
-		go(&"search")
-		return
 
 	if agent.sensor.distance() > agent.attack_radius:
 		go(&"chase")
