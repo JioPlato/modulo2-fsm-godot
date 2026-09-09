@@ -14,15 +14,9 @@ extends CharacterBody2D
 @export var max_health: int = 100
 @export var radius: float = 15.0
 
-## Caminho até o nó cujos filhos Marker2D formam a rota de patrulha.
-##
-## É um `NodePath`, e não uma referência `@export var x: Node2D`. A diferença
-## importa: uma referência a nó só é resolvida pelo editor, e um `.tscn`
-## escrito à mão com `patrol_root = NodePath("...")` deixa a propriedade
-## **nula para sempre** — sem erro, sem aviso, apenas um guarda parado.
-##
-## Com `NodePath` + `get_node_or_null()` a resolução é explícita, acontece
-## onde você a lê, e funciona igual no editor e fora dele.
+## Caminho da rota, resolvido explicitamente ao iniciar.
+## Godot também suporta @export de Node. Aqui usamos NodePath para deixar
+## o vínculo legível no arquivo de cena e a resolução explícita no script.
 @export var patrol_path: NodePath = ^"../PatrolPoints"
 
 var health: int = 100
