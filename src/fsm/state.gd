@@ -12,10 +12,11 @@ signal transition_requested(to: StringName)
 var agent: Guard = null
 
 ## Injeção de dependência. Super-estados sobrescrevem para propagar.
-func setup(_context: Guard) -> void:
+func setup(context: Guard) -> void:
+	agent = context
 	# TODO: injecao de dependencia: guarde o contexto em `agent`.
 	#       Super-estados sobrescrevem para repassar aos sub-estados.
-	pass
+	
 
 func enter() -> void:
 	# TODO: chamado UMA vez, ao entrar. Preparacao da entrada.
@@ -35,6 +36,7 @@ func path() -> String:
 	return name
 
 ## Açúcar sintático para pedir uma transição.
-func go(_to: StringName) -> void:
+func go(to: StringName) -> void:
+	transition_requested.emit(to)
 	# TODO: emita `transition_requested` com o destino.
 	pass

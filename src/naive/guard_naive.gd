@@ -54,6 +54,8 @@ func _physics_process(delta: float) -> void:
 func _patrulhar() -> void:
 	if sensor.can_see():
 		estado = Estado.PERSEGUIR          # transição 1
+		# Here is where we would play the SFX as it begins to chase the player,
+		# as this would only play once
 		return
 	if _pontos.is_empty():
 		velocity = Vector2.ZERO

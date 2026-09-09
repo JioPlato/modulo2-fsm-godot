@@ -93,3 +93,36 @@ Referências oficiais: [propriedades exportadas](https://docs.godotengine.org/en
 
 Não versione `.godot/`. Os arquivos `.gd.uid` gerados pela Godot 4.4+ devem
 acompanhar os scripts no Git. Material educacional sob licença MIT, conforme LICENSE.
+
+
+
+RESPONDA NO README
+1. Quais dados persistem entre quadros?
+Separe memória de configuração e da
+memória do sensor.
+O alvo e a velocidade
+
+
+2. Onde se repetem as regras de
+avistamento e desistência?
+No estado de patrulha ele checa se avistou.
+No estado de avistamente ele checa para desistir.
+
+
+3. Onde tocar um som uma vez ao entrar
+em perseguição?
+É possível no enum/match; sem um ponto
+central de entrada, há trabalho repetido.
+
+func _patrulhar() -> void:
+	if sensor.can_see():
+		estado = Estado.PERSEGUIR          # transição 1
+		# Here is where we would play the SFX as it begins to chase the player,
+		# as this would only play once
+		return
+
+^ Eu colocaria ali pq é onde roda apenas uma vez.
+NO ENTANTO, a solução mais ideal seria colocar uma variavel nova na instancia
+que é desativada quando nao estiver no estado perseguir, e ai quando entra no estado
+ele checa se esta desativada, e se estiver, ele ativa e toca o som, garantindo que
+toque o somzinho apenas uma vez.

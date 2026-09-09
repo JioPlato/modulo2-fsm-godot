@@ -6,7 +6,7 @@
 ## Este arquivo é GENÉRICO e ESTÁVEL: não menciona "patrulhar" nem "atacar".
 ## Acrescentar um estado ao jogo não muda uma vírgula aqui — muda a árvore de
 ## nós da cena. É a separação entre MECANISMO (o motor) e ESTRUTURA (os nós).
-class_name StateMachine
+class_name StateMachineG
 extends Node
 
 ## Emitido a cada troca de estado de TOPO. Quem quiser reagir assina.
@@ -15,7 +15,7 @@ signal state_changed(from: StringName, to: StringName)
 ## Nome do estado inicial. A máquina indexa os filhos por nome em minúsculas.
 ## Referências exportadas de Node também são válidas na Godot; usar nomes
 ## aqui é uma escolha de configuração, não uma limitação do carregador.
-@export var initial_state: StringName = &"patrol"
+@export var initial_state: StringName = &"Patrol"
 
 ## Nome do estado avaliado a TODO quadro, em paralelo ao corrente
 ## (Buckland, 2005). Vazio = sem estado global.
@@ -50,14 +50,29 @@ func _ready() -> void:
 	current.enter()
 	state_changed.emit(&"", StringName(current.name))
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	if current == null:
+		return
+	if _global != null:
+		_global.execute(delta)
+	current.execute(delta)
+	_agent.move_and_slide()
 	# TODO: ordem: estado global, estado corrente, e por fim UMA
 	#       chamada a `_agent.move_and_slide()`.
 	pass
 
 # --- API ------------------------------------------------------------------
 
-func change_to(_to: StringName) -> void:
+func change_to(to: StringName) -> void:
+	var next := _lookup(to)
+	if next == null or next == current:
+		return
+	var from := StringName(current.name)
+	current.exit()
+	previous = current
+	current = next
+	current.enter()
+	state_changed.emit(from, StringName(current.name))
 	# TODO: 1. localize o destino com `_lookup`; se nao existir, avise e saia.
 	#       2. se for o estado corrente, nao faca nada.
 	#       3. ORDEM IMPORTA: exit() do que sai ANTES do enter() do que entra.
@@ -90,7 +105,10 @@ func active_path() -> String:
 
 # --- implementação --------------------------------------------------------
 
-func _register(_st: State) -> void:
+func _register(st: State) -> void:
+	st.setup(_agent)
+	st.transition_requested.connect(_on_transition_requested)
+	_states[StringName(st.name.to_lower())] = st
 	# TODO: injete o contexto no estado (setup), ligue o sinal
 	#       `transition_requested` a `_on_transition_requested` e indexe
 	#       o estado em `_states` pelo nome em MINUSCULAS.

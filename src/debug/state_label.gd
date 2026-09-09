@@ -10,10 +10,10 @@
 ## estado ativo é um rótulo; numa hierárquica, é um caminho.
 extends Label
 
-var _machine: StateMachine
+var _machine: StateMachineG
 
 func _ready() -> void:
-	_machine = get_parent().get_node_or_null("StateMachine") as StateMachine
+	_machine = get_parent().get_node_or_null("StateMachineGuard") as StateMachineG
 
 func _process(_delta: float) -> void:
 	if _machine != null:

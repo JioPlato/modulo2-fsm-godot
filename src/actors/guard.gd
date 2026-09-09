@@ -19,6 +19,7 @@ extends CharacterBody2D
 ## o vínculo legível no arquivo de cena e a resolução explícita no script.
 @export var patrol_path: NodePath = ^"../PatrolPoints"
 
+
 var health: int = 100
 var patrol_points: PackedVector2Array = PackedVector2Array()
 var body_color: Color = LabPalette.PATRULHAR
@@ -27,8 +28,11 @@ var body_color: Color = LabPalette.PATRULHAR
 ## roda antes do pai, e a StateMachine é filha do guarda.
 var sensor: VisionSensor = null
 
+var state_machine: StateMachineG = null
+
 func _enter_tree() -> void:
 	sensor = get_node_or_null("VisionSensor") as VisionSensor
+	state_machine = get_node_or_null("StateMachineGuard") as StateMachineG
 
 func _ready() -> void:
 	health = max_health

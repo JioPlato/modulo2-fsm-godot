@@ -1,24 +1,27 @@
-; Módulo II — Laboratório de máquinas de estados
-; Versão verificada nesta revisão: Godot 4.7.2 (compatibilidade GL).
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
 
 config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
 config/name="Modulo II - Laboratorio de FSM"
 config/description="Laboratório de máquinas de estados finitas — ICAJD I"
-run/main_scene="res://scenes/lab_a_naive.tscn"
-config/features=PackedStringArray("4.2", "GL Compatibility")
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [display]
 
-window/size/viewport_width=1152
-window/size/viewport_height=648
 window/stretch/mode="canvas_items"
-
-[physics]
-
-common/physics_ticks_per_second=60
 
 [rendering]
 
