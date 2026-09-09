@@ -1,4 +1,6 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/debug/lab_controls.gd" id="lab_controls"]
 
 [ext_resource type="Script" path="res://src/world/walls.gd" id="1_walls"]
 [ext_resource type="Script" path="res://src/world/patrol_route.gd" id="route"]
@@ -30,3 +32,6 @@ position = Vector2(480, 330)
 
 [node name="Guard" parent="." instance=ExtResource("3_guard")]
 position = Vector2(160, 140)
+
+[node name="LabControls" type="Node" parent="."]
+script = ExtResource("lab_controls")

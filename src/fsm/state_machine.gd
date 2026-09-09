@@ -12,11 +12,9 @@ extends Node
 ## Emitido a cada troca de estado de TOPO. Quem quiser reagir assina.
 signal state_changed(from: StringName, to: StringName)
 
-## Nome do nó-filho em que a máquina começa.
-##
-## Um nome, e não uma referência a nó: `@export var x: State` só é preenchido
-## pelo editor e fica nulo num `.tscn` escrito à mão. Um nome sempre funciona,
-## e a máquina já indexa os estados por nome.
+## Nome do estado inicial. A máquina indexa os filhos por nome em minúsculas.
+## Referências exportadas de Node também são válidas na Godot; usar nomes
+## aqui é uma escolha de configuração, não uma limitação do carregador.
 @export var initial_state: StringName = &"patrol"
 
 ## Nome do estado avaliado a TODO quadro, em paralelo ao corrente
