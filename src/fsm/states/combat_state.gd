@@ -31,7 +31,7 @@
 class_name CombatState
 extends State
 
-@export var initial_substate: State
+@export var initial_substate: StringName = &"chase"
 
 var current_sub: State = null
 

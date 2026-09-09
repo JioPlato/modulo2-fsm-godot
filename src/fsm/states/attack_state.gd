@@ -1,11 +1,6 @@
-## Atacar — agora um SUB-ESTADO de Combat.
-##
-## Como em Chase, o teste de desistência por tempo saiu deste arquivo. O que
-## sobrou é o comportamento próprio do estado, e nada mais.
-##
-## Observe o uso de `enter()`: o som e a mudança de cor acontecem UMA vez, no
-## instante da troca. Se estivessem em `execute()`, tocariam sessenta vezes
-## por segundo. É a diferença entre a saída "à Mealy" e a "à Moore".
+## Ataque: para, respeita a cadência e só aplica dano com visão livre.
+## enter prepara a recarga uma vez. A saída por tempo é duplicada no bloco B
+## e passa a ser responsabilidade de Combat no bloco C.
 extends State
 
 @export var damage: int = 8
@@ -32,5 +27,6 @@ func exit() -> void:
 	pass
 
 func _strike() -> void:
-	# TODO: cause dano ao alvo, se ele tiver `take_damage`.
+	# TODO: só golpeie se agent.sensor.can_see() e o alvo
+	#       possuir take_damage. A solução detalhada está em docs/SOLUCOES.md.
 	pass

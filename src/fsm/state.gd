@@ -1,14 +1,7 @@
-## Classe base de todo estado — a interface do padrão *State*.
-##
-##   enter()    uma única vez, ao ENTRAR   — preparação (efeito "à Mealy")
-##   execute()  a cada quadro              — comportamento contínuo ("à Moore")
-##   exit()     uma única vez, ao SAIR     — limpeza
-##
-## POR QUE UM SINAL, E NÃO UMA CHAMADA À MÁQUINA?
-## Um estado que chamasse `machine.change_to(...)` precisaria de referência à
-## máquina, que já referencia o estado: um ciclo. Ciclos entre `class_name`
-## complicam a análise da Godot e, pior, impedem testar um estado isolado.
-## Com o sinal, o estado apenas ANUNCIA; quem escuta decide.
+## Interface do estado: enter prepara, execute atualiza, exit libera.
+## O sinal anuncia uma transição sem depender da classe da máquina.
+## Isso facilita testes isolados; referências injetadas também podem ser testadas.
+## setup recebe o contexto e path informa o caminho ativo para depuração.
 class_name State
 extends Node
 
@@ -25,7 +18,7 @@ func setup(_context: Guard) -> void:
 	pass
 
 func enter() -> void:
-	# TODO: chamado UMA vez, ao entrar. Preparacao (efeito 'a Mealy').
+	# TODO: chamado UMA vez, ao entrar. Preparacao da entrada.
 	pass
 
 func execute(_delta: float) -> void:
