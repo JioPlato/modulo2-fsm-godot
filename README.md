@@ -1,86 +1,95 @@
-# Módulo II — Laboratório de Máquinas de Estados
+# Módulo II — Laboratório de máquinas de estados
 
-Projeto **Godot 4.2+** do segundo encontro do Módulo II da disciplina
-*Inteligência Computacional Aplicada a Jogos Digitais I* (Sistemas e Mídias
-Digitais, 7º semestre).
+Encontro 2 de Inteligência Computacional Aplicada a Jogos Digitais I.
+Versão executada nesta revisão: **Godot 4.7.2**, renderizador GL Compatibility.
+O projeto usa recursos de Godot 4.x; versões anteriores não foram verificadas nesta revisão.
 
-O laboratório constrói o mesmo guarda três vezes, em ordem crescente de
-disciplina arquitetural, para que a diferença entre elas seja **sentida** e não
-apenas descrita:
+## Começar pela pasta recebida
 
-| Etapa | O que se constrói | Tag |
-|---|---|---|
-| A | FSM ingênua: `enum` + `match` num único arquivo | `etapa-a-fsm-ingenua` |
-| B | FSM por objetos de estado — padrão *State* | `etapa-b-padrao-state` |
-| C | HFSM: super-estado de combate com transição herdada | `etapa-c-hfsm` |
-
-## Como começar
+Copie a pasta `modulo2-fsm-godot` fornecida pelo docente, incluindo a pasta oculta
+`.git`. Este material funciona localmente e não depende de um endereço GitHub.
+Abra o terminal dentro da pasta do projeto e crie sua branch de trabalho:
 
 ```bash
-git clone <url-do-repositorio>
-cd modulo2-fsm-godot
-git switch starter        # esqueleto com TODOs — comece por aqui
+git switch -c meu-laboratorio starter
+godot --headless --path . --import
 ```
 
-Abra a pasta na Godot 4.2 ou superior (*Import* → selecione `project.godot`).
+Na Godot, use **Import** e selecione `project.godot`. Espere a importação terminar.
+O comando `godot` precisa apontar para o executável instalado. No macOS desta revisão:
+`/Applications/Godot.app/Contents/MacOS/Godot`. No Windows, use o caminho do executável
+de console da sua instalação. Não cole um caminho que não existe na sua máquina.
 
-- **F5** roda a cena principal (`scenes/main.tscn`) — o guarda com padrão *State*.
-- **F6** roda a cena aberta. Use em `scenes/lab_a_naive.tscn` para ver a versão ingênua.
-- Setas do teclado movem o jogador.
+**Bloco A:** abra `scenes/lab_a_naive.tscn` e pressione **F6**.
+Na `starter`, F5 também abre essa cena.
 
-O roteiro completo, passo a passo, está em [`docs/ROTEIRO.md`](docs/ROTEIRO.md).
+**Início do bloco B:** abra `scenes/main.tscn` e defina-a como cena principal
+em **Project > Project Settings > Application > Run > Main Scene**.
+Salve a configuração. A partir daí, F5 executa o trabalho de B/C.
+Para conferir sem alterar a configuração, rode `scenes/main.tscn` com F6.
 
-## Branches
+**Controles:** setas movem o jogador. Na cena C, **F** causa 80 de dano ao guarda:
+ele foge com 20 de vida, recupera 6 pontos/s e volta a patrulhar ao chegar a 50.
+A tecla é um gatilho didático, não um sistema de combate do jogador.
 
-- **`starter`** — esqueleto comentado, com `TODO` nos pontos que você deve escrever.
-  É o ponto de partida da aula.
-- **`main`** — solução de referência, comentada. Consulte depois de tentar,
-  ou quando estiver travado por mais de dez minutos.
+## Branches e etapas
 
-## Estrutura
+| Referência | Conteúdo | Verificador do motor/rota | Simulador da cena principal |
+|---|---|---|---|
+| `starter` | A pronta; TODOs de B/C | 6/13, falhas esperadas até implementar B | 17/17 na cena A |
+| `etapa-a-fsm-ingenua` | enum + match completo | 2/2; motor State ainda ausente | 17/17 |
+| `etapa-b-padrao-state` | FSM plana por objetos | 13/13 | 17/17 |
+| `etapa-c-hfsm` | HFSM, estado global e fuga | 13/13 | 22/22 |
+| `main` | Solução completa e documentação | 13/13 | 22/22 |
 
-```
-src/
-  actors/        player.gd, guard.gd          — o CONTEXTO (só dados e serviços)
-  perception/    vision_sensor.gd             — o estágio SENTIR, isolado
-  fsm/           state.gd, state_machine.gd   — o motor, genérico e estável
-  fsm/states/    um arquivo por estado         — o comportamento
-  naive/         guard_naive.gd               — a versão da etapa A, para comparação
-  debug/         state_label.gd               — depuração por Observer
-  world/         walls.gd                     — cenário orientado a dados
-tests/
-  run_tests.gd   testes headless, sem plugin  — `godot --headless --script res://tests/run_tests.gd`
-docs/
-  ROTEIRO.md, ARQUITETURA.md, AVALIACAO.md
-```
+Os totais são os da distribuição, antes dos casos acrescentados pelo aluno.
+O ciclo comum é patrulha, perseguição, ataque com cadência e procura, seguido
+de retorno à patrulha. C acrescenta a fuga global como requisito próprio.
 
-## Testes
+## Verificação
 
-Num clone novo, importe uma vez antes (a Godot precisa registrar as classes):
+Todos os refs incluem os verificadores necessários para a sua etapa:
 
 ```bash
 godot --headless --path . --import
 godot --headless --path . --script res://tests/run_tests.gd
+godot --headless --fixed-fps 60 --path . --script res://sim_scene.gd
 ```
 
-Sai com código 0 se todos os casos passarem. Rode antes de cada *commit*.
+O simulador usa a cena principal configurada. Para escolher explicitamente:
 
-## Estado de verificação
+```bash
+godot --headless --fixed-fps 60 --path . --script res://sim_scene.gd -- --scene=a
+godot --headless --fixed-fps 60 --path . --script res://sim_scene.gd -- --scene=main
+```
 
-Este projeto foi **executado** na Godot 4.3, e não apenas analisado. Em cada
-branch e em cada *tag*:
+`--scene=main` só vale a partir de B e na `starter` depois de completar os TODOs.
+Código de saída 0 significa aprovação, 1 significa falha. As falhas da `starter`
+são exercícios pendentes; não são erros de sintaxe e não devem ser escondidas.
+Completar somente `State.go()` não basta para aprovar o motor real.
 
-| Ref | Importação | Comportamento observado |
-|---|---|---|
-| `etapa-a-fsm-ingenua` | sem erros | `PATRULHAR → PERSEGUIR → ATACAR → PROCURAR → PATRULHAR` |
-| `etapa-b-padrao-state` | sem erros | `Patrol → Chase → Attack → Search → Patrol` |
-| `etapa-c-hfsm` | sem erros | `Patrol → Combat/Chase → Combat/Attack → Search → Patrol` |
-| `main` | sem erros | idem, com estado global e fuga |
-| `starter` | sem erros | roda a cena do bloco A; o resto espera você |
+## Quando precisar retomar uma etapa
 
-O guarda percorre ~2200 px em 24 s, dobra os quatro cantos da rota e nunca
-fica travado. A simulação que mede isso é `sim_scene.gd` (veja abaixo).
+Guarde seu trabalho antes de mudar de versão. Para retomar pela solução B:
 
-## Licença
+```bash
+git stash push -u -m "tentativa antes de retomar B"
+git switch -c retomada-b etapa-b-padrao-state
+```
 
-MIT — veja [`LICENSE`](LICENSE). Material didático, livre para reúso com atribuição.
+Escolha outro nome se `retomada-b` já existir. A branch nova mantém seus próximos
+commits associados a um nome. A tentativa anterior continua guardada no stash.
+Pare a execução do jogo antes de trocar arquivos e espere a reimportação.
+
+## Material de apoio
+
+- [ROTEIRO.md](docs/ROTEIRO.md): passos e marcos de verificação.
+- [SOLUCOES.md](docs/SOLUCOES.md): arquivos completos de B/C para consulta depois da tentativa.
+- [ARQUITETURA.md](docs/ARQUITETURA.md): decisões e limites do desenho.
+- [AVALIACAO.md](docs/AVALIACAO.md): entrega e pesos.
+- [tests/README.md](tests/README.md): cobertura e novos casos.
+
+Referências oficiais: [propriedades exportadas](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_exports.html#nodes) e [linha de comando](https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html).
+
+Não versione `.godot/`. Os arquivos `.gd.uid` gerados pela Godot 4.4+ devem
+acompanhar os scripts no Git. Material educacional sob licença MIT, conforme LICENSE.

@@ -1,4 +1,6 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/debug/lab_controls.gd" id="lab_controls"]
 
 [ext_resource type="Script" path="res://src/world/walls.gd" id="1_walls"]
 [ext_resource type="Script" path="res://src/world/patrol_route.gd" id="route"]
@@ -54,3 +56,6 @@ theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
 theme_override_font_sizes/font_size = 18
 text = "PATRULHAR"
 horizontal_alignment = 1
+
+[node name="LabControls" type="Node" parent="."]
+script = ExtResource("lab_controls")

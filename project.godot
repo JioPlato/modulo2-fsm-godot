@@ -1,5 +1,5 @@
 ; Módulo II — Laboratório de máquinas de estados
-; Engine: Godot 4.2 ou superior
+; Versão verificada nesta revisão: Godot 4.7.2 (compatibilidade GL).
 
 config_version=5
 
